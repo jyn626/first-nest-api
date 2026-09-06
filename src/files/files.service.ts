@@ -5,7 +5,8 @@ export class FilesService {
   private files = [
     { id: 1, name: "photo.jpg", path: "/images/photo.jpg" },
     { id: 2, name: "song.mp3", path: "/music/song.mp3" },
-    { id: 3, name: "document.pdf", path: "/docs/document.pdf" }
+    { id: 3, name: "document.pdf", path: "/docs/document.pdf" },
+    { id: 4, name: "fIeYumGSYp4MQlIlU.gif", path: "test-files/fIeYumGSYp4MQlIlU.gif" }
   ]
 
   findAll(limit?: number, offset?: number) {
@@ -31,5 +32,4 @@ export class FilesService {
     this.findOne(id); // check if the file exists first
     return this.files.filter((file) => file.id !== id);
   }
-
 }

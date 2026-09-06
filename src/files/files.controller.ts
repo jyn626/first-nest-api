@@ -35,7 +35,7 @@ export class FilesController {
   }
 
   // POST /files/:id/analyze
-  @Post(':id/analyze')
+  @Get(':id/analyze')
   analyze(@Param('id') id: number) {
     const file = this.findOne(id);
     return this.fileMetadataService.read(file.path);
