@@ -55,6 +55,17 @@ export class FilesService {
     })
   }
 
+  async upload(
+    name: string,
+    path: string
+  ) {
+    const file: typeof files.$inferInsert = {
+      name,
+      path
+    };
+    return await db.insert(files).values(file);
+  }
+
   async delete(id: number) {
     // this.findOne(id); // check if the file exists first
     // return this.files.filter((file) => file.id !== id);

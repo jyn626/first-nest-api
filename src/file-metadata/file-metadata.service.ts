@@ -16,14 +16,12 @@ export class FileMetadataService {
     try {
       let metadata = {};
       const stats = statSync(path);
-      const mime = new Mime();
-
 
       metadata['filename'] = basename(path);
       metadata['extension'] = extname(path);
       metadata['size'] = stats.size;
       metadata['creationTime'] = stats.birthtime;
-      metadata['MIME'] = mime.getType(path);
+      // metadata['MIME'] = Mime.getType(path);
 
       return metadata;
     } catch (error) {
