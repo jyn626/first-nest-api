@@ -16,6 +16,8 @@ import type { FileCreateDto } from './dtos/file-create.dto';
 import { FilesService } from './files.service';
 import { FileMetadataService } from 'src/file-metadata/file-metadata.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @Controller('files')
 export class FilesController {
@@ -53,11 +55,20 @@ export class FilesController {
   // POST /files
   @UseInterceptors(
     FileInterceptor('file', { // FileInterceptor('file') handles the multipart field
-      dest: './uploads'
+      storage: diskStorage({
+        destination: './uploads',
+
+        filename: (req, file, cb) => {
+          const extension = extname(file.originalname);
+          const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}${extension}`;
+
+          cb(null, filename);
+        }
+      })
     })
   )
   @Post()
-  upload(@UploadedFile('file') file) { // and @UploadedFile() retrieves the resulting file object
+  upload(@UploadedFile('file') file: Express.Multer.File) { // and @UploadedFile() retrieves the resulting file object
     console.log(file)
     return this.fileService.upload(file.originalname, file.path);
   }
