@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { db } from 'src/db';
 import { eq } from 'drizzle-orm';
-import { files } from 'src/db/schema';
+import { fileMetadatas, files } from 'src/db/schema';
 
 @Injectable()
 export class FilesService {
@@ -44,6 +44,15 @@ export class FilesService {
 
 
     return matched;
+  }
+
+  async findByExtension(extension: string) {
+    return await db.query.fileMetadatas.findMany({
+      with: {
+        files: true
+      },
+      where: eq(fileMetadatas.extension, extension)
+    })
   }
 
   async delete(id: number) {

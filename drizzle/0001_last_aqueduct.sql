@@ -1,0 +1,1 @@
+ALTER TABLE `FileMetadatas` ADD `extension` text NOT NULL;

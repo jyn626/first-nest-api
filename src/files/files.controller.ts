@@ -13,8 +13,10 @@ export class FilesController {
 
   // GET /files
   @Get()
-  findAll() {
-    return this.fileService.findAll();
+  findAll(
+    @Query("limit") limit: number,
+    @Query("offset") offset: number) {
+    return this.fileService.findAll(limit, offset);
   }
 
   // GET /files/:id

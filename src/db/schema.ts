@@ -9,6 +9,7 @@ export const files = sqliteTable("Files", {
 export const fileMetadatas = sqliteTable("FileMetadatas", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   filename: text("filename").notNull(),
+  extension: text("extension").notNull(),
   size: text("size").notNull(),
   creationTime: text("creationTime").notNull(),
   mime: text("mime").notNull(),
