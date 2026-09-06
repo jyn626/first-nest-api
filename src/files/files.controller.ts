@@ -29,4 +29,14 @@ export class FilesController {
   delete(@Param('id') id) {
     return this.fileService.delete(id);
   }
+<<<<<<< HEAD
+=======
+
+  // POST /files/:id/analyze
+  @Get(':id/analyze')
+  analyze(@Param('id') id: number) {
+    const file = this.findOne(id);
+    return this.fileMetadataService.read(file.path);
+  }
+>>>>>>> 940c4907154bd9f4a4fc1deea6b71489cf6b0514
 }
