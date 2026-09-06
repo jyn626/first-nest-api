@@ -42,7 +42,6 @@ export class FilesService {
       throw new NotFoundException();
     }
 
-
     return matched;
   }
 
