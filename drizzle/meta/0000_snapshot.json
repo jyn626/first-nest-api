@@ -1,11 +1,56 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "2be91e20-ce84-4d0d-b405-be781216a223",
+  "id": "c22ec7a9-2606-46ac-807c-385d7fa5a398",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "files": {
-      "name": "files",
+    "FileMetadatas": {
+      "name": "FileMetadatas",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "filename": {
+          "name": "filename",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "size": {
+          "name": "size",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "creationTime": {
+          "name": "creationTime",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "mime": {
+          "name": "mime",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "Files": {
+      "name": "Files",
       "columns": {
         "id": {
           "name": "id",
@@ -30,8 +75,8 @@
         }
       },
       "indexes": {
-        "files_path_unique": {
-          "name": "files_path_unique",
+        "Files_path_unique": {
+          "name": "Files_path_unique",
           "columns": [
             "path"
           ],

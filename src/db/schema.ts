@@ -1,7 +1,15 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
-export const files = sqliteTable("files", {
+export const files = sqliteTable("Files", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   path: text("path").notNull().unique(),
+})
+
+export const fileMetadatas = sqliteTable("FileMetadatas", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  filename: text("filename").notNull(),
+  size: text("size").notNull(),
+  creationTime: text("creationTime").notNull(),
+  mime: text("mime").notNull(),
 })

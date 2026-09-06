@@ -1,21 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { statSync } from 'node:fs';
 import { basename, extname } from 'node:path';
-<<<<<<< HEAD
-
-@Injectable()
-export class FileMetadataService {
-
-  read(path: string) {
-    let metadata = {};
-    const stats = statSync(path);
-
-    metadata['filename'] = basename(path);
-    metadata['extension'] = extname(path);
-    metadata['size'] = stats.size;
-    metadata['creationTime'] = stats.birthtime;
-=======
 import { Mime } from 'mime';
+
 
 @Injectable()
 export class FileMetadataService {
@@ -53,6 +40,5 @@ export class FileMetadataService {
       // TODO: fix this red squiggly line later
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
     }
->>>>>>> 940c4907154bd9f4a4fc1deea6b71489cf6b0514
   }
 }
