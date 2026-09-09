@@ -4,6 +4,7 @@ export const files = sqliteTable("Files", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   path: text("path").notNull().unique(),
+  sha: text("sha")
 })
 
 export const fileMetadatas = sqliteTable("FileMetadatas", {
