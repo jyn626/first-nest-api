@@ -14,8 +14,6 @@ export class HashService {
       const fileStream = fs.createReadStream(filepath); // readable source
       // create sha-256 hash stream
       const hashStream = crypto.createHash('sha256'); // writable/transform
-      // create writable output stream
-      const outputStream = fs.createWriteStream('output.txt'); // readable source
 
       fileStream.on('data', (chunk) => {
         hashStream.update(chunk);

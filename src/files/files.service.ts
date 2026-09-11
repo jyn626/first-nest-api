@@ -71,4 +71,8 @@ export class FilesService {
 
     return await db.delete(files).where(eq(files.id, id));
   }
+
+  async saveHash(id: number, hash: string) {
+    return await db.update(files).set({ sha: hash }).where(eq(files.id, id))
+  }
 }

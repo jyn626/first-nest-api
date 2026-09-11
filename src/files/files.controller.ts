@@ -93,6 +93,11 @@ export class FilesController {
   @Post(':id/hash')
   async storeHash(@Param('id') id: number) {
     const file = await this.findOne(id);
-    return await this.hashService.getSHA256(file.path);
+    const hash = await this.hashService.getSHA256(file.path);
+    await this.fileService.saveHash(id, hash as string);
+    return {
+      message: 'Hash successfull.',
+      hash,
+    };
   }
 }
