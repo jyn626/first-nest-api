@@ -10,7 +10,8 @@ import {
   HttpCode,
   HttpStatus,
   UseInterceptors,
-  UploadedFile
+  UploadedFile,
+  HttpException
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { FileMetadataService } from 'src/file-metadata/file-metadata.service';
@@ -18,6 +19,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { HashService } from 'src/hash/hash.service';
+import Fs from 'node:fs/promises'
+import e from 'express';
 
 @Controller('files')
 export class FilesController {
@@ -72,13 +75,25 @@ export class FilesController {
   async upload(@UploadedFile('file') file: Express.Multer.File) { // and @UploadedFile() retrieves the resulting file object
     console.log(file)
 
+    // temporarily store the file and see if there's any duplicate
     await this.fileService.upload(file.originalname, file.path);
 
     // after the file upload is complete, compute hash and check if it already exists
     const newFileHash = await this.hashService.getSHA256(file.path);
     const exists = await this.hashService.getDuplicates(newFileHash as string);
 
-    console.log('-- exists: ', exists);
+    console.log('-- exists: ', exists.length);
+
+    // reject duplicates
+    if (exists.length > 0) {
+      // delete file from disk
+      await Fs.rm(file.path, { force: true });
+
+      // send error
+      throw new HttpException('File already exists, duplicates are not supported.', HttpStatus.CONFLICT)
+    }
+
+    // if theyre arent duplicates then store the file.
 
     return {
       message: 'Upload successfull.',
