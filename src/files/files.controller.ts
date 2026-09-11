@@ -69,9 +69,21 @@ export class FilesController {
     })
   )
   @Post()
-  upload(@UploadedFile('file') file: Express.Multer.File) { // and @UploadedFile() retrieves the resulting file object
+  async upload(@UploadedFile('file') file: Express.Multer.File) { // and @UploadedFile() retrieves the resulting file object
     console.log(file)
-    return this.fileService.upload(file.originalname, file.path);
+
+    await this.fileService.upload(file.originalname, file.path);
+
+    // after the file upload is complete, compute hash and check if it already exists
+    const newFileHash = await this.hashService.getSHA256(file.path);
+    const exists = await this.hashService.getDuplicates(newFileHash as string);
+
+    console.log('-- exists: ', exists);
+
+    return {
+      message: 'Upload successfull.',
+      filepath: file.path
+    };
   }
 
   // DELETE /files/:id
