@@ -7,29 +7,29 @@ import { pipeline } from 'stream';
 @Injectable()
 export class HashService {
 
-  async getSHA256(filepath: string) {
-    // create readable filestream
-    const fileStream = fs.createReadStream(filepath); // readable source
-    // create sha-256 hash stream
-    const hashStream = crypto.createHash('sha256'); // writable/transform
+  getSHA256(filepath: string) {
+    return new Promise((resolve, reject) => {
+      console.log(filepath)
+      // create readable filestream
+      const fileStream = fs.createReadStream(filepath); // readable source
+      // create sha-256 hash stream
+      const hashStream = crypto.createHash('sha256'); // writable/transform
+      // create writable output stream
+      const outputStream = fs.createWriteStream('output.txt'); // readable source
 
-    try {
-      // pipeline 
-      // - filestream reads the file by chunk,
-      // - and each chunk will be then send to the hash stream
-      // - where the hashing is handled.
+      fileStream.on('data', (chunk) => {
+        hashStream.update(chunk);
+      })
 
-      // if the disk reads the file faster than the crypto algorithm
-      // can calculate the hash, the pipeline automatically tells the file stream to pause.
-      // once the crypto stream catches up, the pipeline tells the file stream to resume.
-      await pipeline(fileStream, hashStream); // the computed binary hash sits in the stream's internal buffer
+      fileStream.on('end', () => {
+        resolve(hashStream.digest('hex'))
+      })
 
-      const finalhash = hashStream.read().toString('hex');
+      fileStream.on('error', (error) => {
+        reject(error)
+      })
 
-      return finalhash;
-    } catch (error) {
-      console.log(error)
-    }
+    })
   }
 
 }

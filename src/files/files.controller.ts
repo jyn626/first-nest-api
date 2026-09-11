@@ -12,18 +12,19 @@ import {
   UseInterceptors,
   UploadedFile
 } from '@nestjs/common';
-import type { FileCreateDto } from './dtos/file-create.dto';
 import { FilesService } from './files.service';
 import { FileMetadataService } from 'src/file-metadata/file-metadata.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { HashService } from 'src/hash/hash.service';
 
 @Controller('files')
 export class FilesController {
   constructor(
     private fileService: FilesService,
     private fileMetadataService: FileMetadataService,
+    private hashService: HashService
   ) { }
 
   @Get('/test')
@@ -86,5 +87,12 @@ export class FilesController {
     const file = await this.findOne(id);
 
     return this.fileMetadataService.read(file.path);
+  }
+
+  // POST /files/:id/hash
+  @Post(':id/hash')
+  async storeHash(@Param('id') id: number) {
+    const file = await this.findOne(id);
+    return await this.hashService.getSHA256(file.path);
   }
 }
